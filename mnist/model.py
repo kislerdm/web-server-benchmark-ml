@@ -4,6 +4,8 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
 
 
 np.random.seed(2019)
@@ -47,7 +49,7 @@ def callbacks_definition(learning_rate: float = .001) -> list:
         return learning_rate * np.exp(alpha * (epoch_thresh - epoch))
 
     return [keras.callbacks.EarlyStopping(monitor='val_loss',
-                                          min_delta=1e-2,
+                                          min_delta=1e-3,
                                           patience=2,
                                           verbose=0,
                                           mode='min',
