@@ -8,7 +8,7 @@ import numpy as np
 
 np.random.seed(2019)
 
-PATH_OUT = os.path.join(os.getcwd(), "mnist_model.tf")
+PATH_OUT = os.path.join(os.getcwd(), "mnist_model_py.tf")
 
 LEARNING_RATE = 1e-3
 BATCH_SIZE = 64
