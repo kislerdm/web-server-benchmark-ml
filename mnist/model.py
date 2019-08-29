@@ -78,7 +78,8 @@ if __name__ == "__main__":
     callbacks = callbacks_definition(learning_rate=LEARNING_RATE)
 
     model.fit(x=x_train, y=y_train,
-              batch_size=BATCH_SIZE, epochs=LIMIT_EPOCHS,
+              validation_data=(x_test, y_test),
+              batch_size=BATCH_SIZE, epochs=LIMIT_EPOCHS,   
               use_multiprocessing=True, workers=4,
               shuffle=True,
               callbacks=callbacks)
