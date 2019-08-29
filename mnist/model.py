@@ -38,7 +38,7 @@ def model_definition() -> keras.Sequential:
 def callbacks_definition(learning_rate: float = .001) -> list:
     """ Kears callbacks preparation """
 
-    def _scheduler(epoch: int) -> float:
+    def _scheduler(epoch: int):
         eposh_thresh = 5
         alpha = .1
         
