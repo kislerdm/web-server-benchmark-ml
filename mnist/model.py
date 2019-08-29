@@ -38,13 +38,13 @@ def model_definition() -> keras.Sequential:
 def callbacks_definition(learning_rate: float = .001) -> list:
     """ Kears callbacks preparation """
 
-    def _scheduler(epoch: int):
+    def _scheduler(epoch: int) -> float:
         eposh_thresh = 5
         alpha = .1
         
         if epoch < eposh_thresh:
             return learning_rate
-        return learning_rate * tf.math.exp(alpha * (eposh_thresh - epoch))
+        return learning_rate * np.exp(alpha * (eposh_thresh - epoch))
 
     return [keras.callbacks.EarlyStopping(monitor='val_loss',
                                           min_delta=1e-2,
