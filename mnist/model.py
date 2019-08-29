@@ -42,9 +42,9 @@ def callbacks_definition(learning_rate: float = .001) -> list:
         epoch_thresh = 5
         alpha = .1
         
-        if epoch < eposh_thresh:
+        if epoch < epoch_thresh:
             return learning_rate
-        return learning_rate * np.exp(alpha * (eposh_thresh - epoch))
+        return learning_rate * np.exp(alpha * (epoch_thresh - epoch))
 
     return [keras.callbacks.EarlyStopping(monitor='val_loss',
                                           min_delta=1e-2,
