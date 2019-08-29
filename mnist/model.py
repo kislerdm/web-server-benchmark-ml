@@ -39,7 +39,7 @@ def callbacks_definition(learning_rate: float = .001) -> list:
     """ Kears callbacks preparation """
 
     def _scheduler(epoch: int) -> float:
-        eposh_thresh = 5
+        epoch_thresh = 5
         alpha = .1
         
         if epoch < eposh_thresh:
