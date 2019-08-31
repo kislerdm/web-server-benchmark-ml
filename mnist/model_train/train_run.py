@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore")
 
 np.random.seed(2019)
 
-PATH_OUT = os.path.join(os.getcwd(), "mnist_model_py")
+PATH_OUT = os.path.join(os.getcwd(), "model/mnist_model_py")
 
 LEARNING_RATE = 1e-3
 BATCH_SIZE = 32
