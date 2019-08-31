@@ -12,8 +12,7 @@ POST_OBJ_KEY = "image"
 logs = get_logger()
 
 DIR = os.getcwd()
-PATH_MODEL = os.path.join(
-    DIR, "../../model_train/model/mnist_model_py_keras.h5")
+PATH_MODEL = os.path.join(DIR, "../../model_train/model/mnist_model_py_keras.h5")
 
 if not os.path.isfile(PATH_MODEL):
     logs.error(f"File {PATH_MODEL} doesn't exist, cannot load the model")
