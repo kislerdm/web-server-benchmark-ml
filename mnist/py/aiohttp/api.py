@@ -3,6 +3,8 @@ import sys
 from web_server_benchmark_mnist.utils import get_logger
 from web_server_benchmark_mnist.model import Predictor
 from aiohttp import web
+from multidict import MultiDict
+from collections import namedtuple
 
 
 PORT = 4500
@@ -25,61 +27,64 @@ if not os.path.isfile(PATH_IMAGE_TEST):
         f"File {PATH_IMAGE_TEST} doesn't exist, cannot load the test image")
     sys.exit(1)
 
-
 # wrk workaroung to use GET request instead of POST
-class io_file:
-    body = open(PATH_IMAGE_TEST, 'rb').read()
-    type = "image/jpeg"
-
-
-FILE = io_file
+FileField = namedtuple("FileField", ['name', 'file_name', 'content_type', 'file'])
+DATA = MultiDict({"image": FileField(
+    name=POST_OBJ_KEY,
+    content_type="image/jpeg",
+    file_name="test_2.jpeg",
+    file=open(PATH_IMAGE_TEST, 'rb').read()
+)})
 
 
 class Endpoint(Predictor):
 
     async def handler(self, request) -> web.json_response:
         """ Web server handler function """
-        
-        try:
-            reader = await request.multipart()
-            data = await reader.next()
-            image = await data.read()
-        except Exception as ex:
-            logs.error(ex)
-            return web.json_response(body={"data": None}, status=web.HTTPNotAcceptable)
 
         try:
-            image = self.image_adjust(images)
+            # data = await request.post()
+            # workaround for wrk to use GET request instead of POST
+            data = DATA.copy()
+            if POST_OBJ_KEY not in data:
+                return web.json_response({"data": None}, status=web.HTTPNotAcceptable)
+
+            if "image" not in data[POST_OBJ_KEY].content_type and\
+                    "octet-stream" not in data[POST_OBJ_KEY].content_type:
+                return web.json_response({"data": None}, status=web.HTTPNotAcceptable)
+            
+            # workaround for wrk to use GET request instead of POST
+            file = data[POST_OBJ_KEY].file
+            # image = file.read()
+            image = file
+
+        except Exception as ex:
+            print(ex)
+            return web.json_response({"data": None}, status=web.HTTPNotAcceptable)
+
+        try:
+            image = self.image_adjust(image)
 
         except Exception as ex:
             logs.error("Image transformation error.\n%s", ex)
+            return web.json_response({"data": None}, status=web.HTTPInternalServerError)
+
+        prob, digit, err = self.get_prediction(image)
+        if err:
+            logs.error("Prediciton error.\n%s", err)
             return web.json_response(body={"data": None}, status=web.HTTPInternalServerError)
-        return web.json_response(body={"data": 1})
-        # prob, digit, err = self.get_prediction(image)
-        # if err:
-        #     logs.error("Prediciton error.\n%s", err)
-        #     return web.json_response(body={"data": None}, status=web.HTTPInternalServerError)
 
-        # return web.json_response(body={"data":
-        #                                {"digit": digit,
-        #                                 "probability": prob
-        #                                 }
-        #                                }
-        #                          )
+        return web.json_response({"data":
+                                  {"digit": digit,
+                                   "probability": prob
+                                   }
+                                  }
+                                 )
 
-
-# async def handler(request) -> web.json_response:
-#         """ Web server handler function """
-
-#         reader = await request.post()
-#         image = await reader.next()
-#         print(await image.read(decode=True))
-        
-#         return web.json_response({"a": 1})
 
 if __name__ == "__main__":
     endpoint = Endpoint(PATH_MODEL)
 
     app = web.Application()
-    app.router.add_route(method="POST", path="/", handler=endpoint.handler)
-    web.run_app(app, host="0.0.0.0", port=PORT)
+    app.router.add_route(method="GET", path="/", handler=endpoint.handler)
+    web.run_app(app, host="0.0.0.0", port=PORT, access_log=None)

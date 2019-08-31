@@ -60,6 +60,6 @@ class Predictor(ABC):
         return img
     
     @abstractmethod
-    def handler(self):
+    def handler(self, request):
         """ Web server handler function """
         pass

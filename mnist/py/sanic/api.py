@@ -6,6 +6,7 @@ from sanic import Sanic, response
 
 
 PORT = 4500
+POST_OBJ_KEY = "image"
 
 logs = get_logger()
 
@@ -36,8 +37,10 @@ class Endpoint(Predictor):
 
     async def handler(self, request) -> response.json:
         """ Web server handler function """
-
-        # file = request.files.get("image")
+        
+        # if POST_OBJ_KEY not in request.files.keys():
+        #     return response.json(body={"data": None}, status=406)
+        # file = request.files.get(POST_OBJ_KEY)
         # workaround for wrk to use GET request instead of POST
         file = FILE
         if file is None:
