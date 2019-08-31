@@ -11,15 +11,14 @@ POST_OBJ_KEY = "image"
 logs = get_logger()
 
 DIR = os.getcwd()
-PATH_MODEL = os.path.join(
-    DIR, "../../model_train/model/mnist_model_py_keras.h5")
+PATH_MODEL = os.path.join(DIR, "../../model_train/model/mnist_model_py_keras.h5")
 
 if not os.path.isfile(PATH_MODEL):
     logs.error(f"File {PATH_MODEL} doesn't exist, cannot load the model")
     sys.exit(1)
 
 # test image with the digit "2" on it
-PATH_IMAGE_TEST = "../../test_2.jpeg"
+PATH_IMAGE_TEST = os.path.join(DIR, "../../test_2.jpeg")
 if not os.path.isfile(PATH_IMAGE_TEST):
     logs.error(f"File {PATH_IMAGE_TEST} doesn't exist, cannot load the test image")
     sys.exit(1)
