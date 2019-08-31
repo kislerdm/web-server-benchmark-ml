@@ -83,6 +83,9 @@ class Predictor:
         """ Web server handler function """
         
         file = request.files.get("image")
+        if file is None:
+            return response.json(body={"data": None}, status=406)
+        
         if "image" not in file.type and\
                 "octet-stream" not in file.type:
             return response.json(body={"data": None}, status=406)
