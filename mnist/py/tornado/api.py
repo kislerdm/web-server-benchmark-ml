@@ -28,12 +28,7 @@ if not os.path.isfile(PATH_IMAGE_TEST):
 
 
 # wrk workaroung to use GET request instead of POST
-class io_file:
-    body = open(PATH_IMAGE_TEST, 'rb').read()
-    type = "image/jpeg"
-
-
-FILE = io_file
+FILE = open(PATH_IMAGE_TEST, 'rb').read()
 
 
 class Model(Predictor):
@@ -52,21 +47,23 @@ logging.getLogger("tornado.access").propagate = False
 
 
 class Handler(tornado.web.RequestHandler):
-    def post(self):
+    def get(self):
         """ Function to handle image POST request """
+        
+        # wrk workaroung to use GET request instead of POST
+        file = FILE
+        # if POST_OBJ_KEY not in self.request.files.keys():
+        #     self.set_status(406)
+        #     self.write({"data": None})
 
-        if POST_OBJ_KEY not in self.request.files.keys():
-            self.set_status(406)
-            self.write({"data": None})
+        # file = self.request.files[POST_OBJ_KEY][0]['body']
 
-        file = self.request.files[POST_OBJ_KEY][0]['body']
-
-        type = self.request.files[POST_OBJ_KEY][0]['content_type']
-        if "image" not in type and\
-                "octet-stream" not in type:
-            self.set_status(406)
-            self.write({"data": None})
-
+        # type = self.request.files[POST_OBJ_KEY][0]['content_type']
+        # if "image" not in type and\
+        #         "octet-stream" not in type:
+        #     self.set_status(406)
+        #     self.write({"data": None})
+        
         try:
             image = model.image_adjust(file)
 
