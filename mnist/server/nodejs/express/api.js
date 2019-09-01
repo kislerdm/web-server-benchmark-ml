@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
           const prediction = model.predict(tf.tensor3d(image_raw, [1, 28, 28]))
                                   .arraySync()[0];
           const prob = Math.max(...prediction);
-          res.end(JSON.stringify({
+          res.status(200).json({
             data: {
               digit: prediction.indexOf(prob),
               probability: prob,
