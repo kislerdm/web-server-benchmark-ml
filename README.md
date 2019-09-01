@@ -43,17 +43,26 @@ instance:
   - ram: 1.7G
 ```
 
+## Dependency libraries
+
+``` yaml
+python:
+  - tensorflow: 2.0.0b1
+  - opencv-python: 4.1.0.25
+  - numpy: 1.16.3
+  
+nodejs:
+  - tensorflow: 1.2.8
+  - multer: 1.4.2
+  - sharp: 0.23.0
+```
+
 # Test
 
 ## ML "Hello World!" - <a hreg="https://en.wikipedia.org/wiki/MNIST_database" target="_blank">MNIST</a>, Handwritten Digits Recognition
 
 ## Model train
 
-MNIST digits recognition model was trained using python with the neural network architecture similar to the one used in <a href="http://myselph.de/neuralNet.html" target="_blank">the project</a>:
-
-![MNIST model architecture](mnist/model_train/model/model_architecture.png)
-
- See the <a hreg="https://www.tensorflow.org/beta/tutorials/keras/basic_classification" target="_blank">ternsorflow tutorial</a>, and [the code](mnist/model_train/train_run.py) for details. 
  Python version used:
 
 ```yaml
@@ -62,6 +71,14 @@ python:
   - libs:
     - tensorflow: 2.0.0b1
 ```
+
+## DNN Architecture
+
+MNIST digits recognition model was trained using python with the neural network architecture similar to the one used in <a href="http://myselph.de/neuralNet.html" target="_blank">the project</a>:
+
+![MNIST model architecture](mnist/dnn/model/model_architecture.png)
+
+See the <a hreg="https://www.tensorflow.org/beta/tutorials/keras/basic_classification" target="_blank">ternsorflow tutorial</a>, and [the code](mnist/dnn/train_run.py) for details. 
 
 ## API json contract
 
