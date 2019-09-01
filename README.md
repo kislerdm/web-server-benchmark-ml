@@ -64,12 +64,12 @@ nodejs:
 ## Model train
 
  Python version used:
-
 ```yaml
 python:
   - version: 3.7.4
   - libs:
     - tensorflow: 2.0.0b1
+    - tensorflowjs: 1.2.6
 ```
 
 ## DNN Architecture
@@ -79,6 +79,24 @@ MNIST digits recognition model was trained using python with the neural network 
 ![MNIST model architecture](mnist/dnn/model/model_architecture.png)
 
 See the <a hreg="https://www.tensorflow.org/beta/tutorials/keras/basic_classification" target="_blank">ternsorflow tutorial</a>, and [the code](mnist/dnn/train_run.py) for details. 
+
+### Model train run
+
+```bash
+git https://github.com/kislerdm/web-server-benchmark-ml.git \
+cd web-server-benchmark-ml\mnist\dnn\ \
+python train_run.py
+```
+
+### Convert python2js model
+
+See details <a href="https://www.tensorflow.org/js/tutorials/conversion/import_saved_model" target="_blank">here</a>.
+
+```bash
+tensorflowjs_converter \
+--input_format keras mnist_model_py_keras.h5 \
+mnist_model_js
+```
 
 ## API json contract
 
