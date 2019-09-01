@@ -83,5 +83,5 @@ The API response is expected as:
 
 ### Attention
 
-<a href="https://github.com/wg/wrk/" target="_blank">wrk</a> doesn't support <em>POST</em> request with binary data body payload (i.e. image file). To be able to use wrk, the API web-servers are being converted to accept <em>GET</em> requests with the <u>test image used for the model imput imported from the disk, not from request body</u>.
+<a href="https://github.com/wg/wrk/" target="_blank">wrk</a> doesn't support <em>POST</em> request with binary data body payload (i.e. image file). To be able to use wrk, the API web-servers are being converted to accept <em>GET</em> requests with the <u>test image used for the model input imported from the disk, not from request body</u>.
 

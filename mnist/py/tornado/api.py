@@ -6,20 +6,20 @@ import tornado.ioloop
 import tornado.web
 import logging
 
-PORT = 4500
-POST_OBJ_KEY = "image"
+
+PORT = os.getenv("PORT")
+PATH_MODEL = os.getenv("PATH_MODEL")
+PATH_IMAGE_TEST = os.getenv("PATH_IMAGE_TEST")
+POST_OBJ_KEY = os.getenv("POST_OBJ_KEY")
 
 logs = get_logger()
 
-DIR = os.getcwd()
-PATH_MODEL = os.path.join(DIR, "../../model_train/model/mnist_model_py_keras.h5")
 
 if not os.path.isfile(PATH_MODEL):
     logs.error(f"File {PATH_MODEL} doesn't exist, cannot load the model")
     sys.exit(1)
 
 # test image with the digit "2" on it
-PATH_IMAGE_TEST = os.path.join(DIR, "../../test_2.jpeg")
 if not os.path.isfile(PATH_IMAGE_TEST):
     logs.error(
         f"File {PATH_IMAGE_TEST} doesn't exist, cannot load the test image")
