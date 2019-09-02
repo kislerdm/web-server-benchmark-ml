@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
               digit: prediction.indexOf(prob),
               probability: prob,
             }
-          }));
+          });
         });
       };
     });
