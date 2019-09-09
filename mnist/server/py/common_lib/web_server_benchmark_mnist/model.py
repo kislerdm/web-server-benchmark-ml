@@ -49,7 +49,7 @@ class Predictor(ABC):
         # convert image to grayscale
         img = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
         # resize the image
-        img = cv2.resize(img, image_size)
+        img = cv2.resize(img, image_size, interpolation=cv2.INTER_NEAREST)
         # invert the image scale
         img = 255. - img
         # norm to 1
