@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -30,29 +31,31 @@ var (
 
 // workaround for wrk to use GET request instead of POST
 var (
-	fileImage = "/Users/dkisler/projects/web-server-benchmark-ml/mnist/test_2.jpeg"
-	reqType   = "image/jpeg"
-	modelPath = "/Users/dkisler/projects/web-server-benchmark-ml/mnist/dnn/model/mnist_model_py"
+	reqType    = "image/jpeg"
+	uploadName = os.Getenv("POST_OBJ_KEY")
 )
 
 func main() {
 
-	model, err := tf.LoadSavedModel(modelPath, []string{"serve"}, nil)
+	model, err := tf.LoadSavedModel(os.Getenv("PATH_MODEL"), []string{"serve"}, nil)
 	if err != nil {
-		log.Print(fmt.Sprintf("Error loading model from %s", modelPath))
+		log.Print(fmt.Sprintf("Error loading model from %s", os.Getenv("PATH_MODEL")))
 		os.Exit(1)
 	}
 	predictor = model
 
 	// workaround for wrk to use GET request instead of POST
-	image, err := os.Open(fileImage)
+	image, err := os.Open(os.Getenv("PATH_IMAGE_TEST"))
 	if err != nil {
 		log.Print(fmt.Sprintf("Cannot read image. Error:\n%s", err))
 		os.Exit(1)
 	}
 	io.Copy(&imageBuffer, image)
 
-	PORT := 4500
+	PORT, err := strconv.Atoi(os.Getenv("PORT"))
+	if err != nil {
+		PORT = 4500
+	}
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", PORT), nil))
 }
@@ -73,7 +76,7 @@ func findMaxArgMax(arr []float32) (max float32, argmax uint8) {
 func handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	// workaround for wrk to use GET request instead of POST
-	// imageFile, imageHeader, err := r.FormFile("image")
+	// imageFile, imageHeader, err := r.FormFile(uploadName)
 	// if err != nil {
 	// 	w.WriteHeader(http.StatusBadRequest)
 	// 	w.Write([]byte(`{"data": null}`))
