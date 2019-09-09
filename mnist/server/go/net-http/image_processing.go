@@ -1,3 +1,5 @@
+// courtesy: https://github.com/tinrab
+// inspired by: https://github.com/tinrab/go-tensorflow-image-recognition/blob/master/image_tensor.go
 package main
 
 import (
